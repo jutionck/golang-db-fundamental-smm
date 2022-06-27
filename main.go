@@ -2,10 +2,8 @@ package main
 
 import (
 	"enigmacamp.com/go-db-fundamnetal/config"
-	"enigmacamp.com/go-db-fundamnetal/repository"
-	"enigmacamp.com/go-db-fundamnetal/usecase"
+	"enigmacamp.com/go-db-fundamnetal/sample"
 	"enigmacamp.com/go-db-fundamnetal/utils"
-	"fmt"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -18,36 +16,19 @@ func main() {
 			utils.IsError(err)
 		}
 	}(db)
-	cstRepo := repository.NewCustomerRepository(db)
-	cstUse := usecase.NewCustomerUseCase(cstRepo)
 
-	// INSERT
-	//cstId := utils.GenerateId()
-	//customer := model.Customer{
-	//	Id:      cstId,
-	//	Name:    "Jution Kirana",
-	//	Address: "Ragunan",
-	//	Phone:   "08292929",
-	//	Email:   "jutionck@gmail.com",
-	//	Balance: 150000,
-	//}
-	//cstUse.InsertCustomer(&customer)
-
-	// DELETE
-	customerId := "C004"
-	err := cstUse.DeleteCustomer(customerId)
-	if err != nil {
-		fmt.Println("error test")
-		fmt.Println(err.Error())
-	}
-
-	// UPDATE
-	//customerUpdate := model.Customer{
-	//	Name:    "Jution Aja",
-	//	Address: "Ragunan",
-	//	Phone:   "08292929",
-	//	Email:   "jutionck@gmail.com",
-	//	Id:      "1c63f19d-e896-4116-a847-2dbb75d7eae8",
-	//}
-	//cstRepo.Update(&customerUpdate)
+	sample.ShopRun(db)
+	//sample.CustomerRun(db)
 }
+
+/**
+# Fetching
+-> Get All (x)
+-> Get By Id (x)
+-> Get By Name (x)
+-> Aggregate:
+   -> count
+   -> sum
+   -> etc...
+-> Join
+*/
