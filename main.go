@@ -2,9 +2,9 @@ package main
 
 import (
 	"enigmacamp.com/go-db-fundamnetal/config"
-	"enigmacamp.com/go-db-fundamnetal/sample"
 	"enigmacamp.com/go-db-fundamnetal/utils"
 	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 func main() {
@@ -17,8 +17,34 @@ func main() {
 		}
 	}(db)
 
-	sample.ShopRun(db)
+	//sample.ShopRun(db)
 	//sample.CustomerRun(db)
+
+	// Transactional
+
+	// Begin
+	defer func() {
+		r := recover()
+		if r != nil {
+			log.Println("aplikasi gagal di jalankan....")
+		}
+	}()
+	tx := db.MustBegin()
+	cstId := "10001" // Bulan
+	cstId02 := 10002
+	rslt := tx.MustExec(`update customer set saldo=(saldo-200) where id=$1`, cstId)
+	r, _ := rslt.RowsAffected()
+	if r == 0 {
+		tx.Rollback()
+	}
+	rslt2 := tx.MustExec(`update customer set saldo=(saldo+200) where id=$1`, cstId02)
+	r2, _ := rslt2.RowsAffected()
+	if r2 == 0 {
+		tx.Rollback()
+	}
+	// Commit
+	tx.Commit()
+
 }
 
 /**
