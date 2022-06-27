@@ -24,8 +24,7 @@ func main() {
 
 	// Begin
 	defer func() {
-		r := recover()
-		if r != nil {
+		if r := recover(); r != nil {
 			log.Println("aplikasi gagal di jalankan....")
 		}
 	}()
@@ -44,7 +43,6 @@ func main() {
 	}
 	// Commit
 	tx.Commit()
-
 }
 
 /**
